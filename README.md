@@ -281,13 +281,58 @@ Monitorizare senzor vibrație în timp real
 ESP32_VibrationSensor/
 ├── src/
 │   └── main.cpp           # Main application code
-├── include/               # Header files (empty in this project)
-├── lib/                   # Custom libraries (empty in this project)
+├── include/               # Header files
+├── lib/
+│   └── WiFiWebManager/    # Reusable WiFi & WebServer library
+│       ├── WiFiWebManager.h
+│       ├── WiFiWebManager.cpp
+│       └── README.md      # Library documentation
 ├── img/
 │   └── ESP32_KY02_VibrationSensor.png  # Wiring diagram
 ├── platformio.ini         # PlatformIO configuration
 └── README.md             # This file
 ```
+
+## 📚 WiFiWebManager Library
+
+This project includes a **reusable library** for managing WiFi connectivity and web server functionality. The `WiFiWebManager` class can be easily extracted and used in other ESP32 projects.
+
+### Key Features
+
+- Automatic WiFi client/AP mode switching
+- Persistent credential storage in EEPROM
+- Simple callback-based route registration
+- Built-in WiFi management endpoints
+- Zero-configuration setup
+
+### Using WiFiWebManager in Other Projects
+
+To use this library in your own projects:
+
+1. **Copy the library folder**:
+   ```bash
+   cp -r lib/WiFiWebManager /path/to/your/project/lib/
+   ```
+
+2. **Include in your code**:
+   ```cpp
+   #include "WiFiWebManager.h"
+   
+   WiFiWebManager wifiManager("MyAP", "password", 80);
+   
+   void setup() {
+       wifiManager.begin();
+       wifiManager.on("/", HTTP_GET, handleRoot);
+   }
+   
+   void loop() {
+       wifiManager.handleClient();
+   }
+   ```
+
+3. **See full documentation**: [lib/WiFiWebManager/README.md](lib/WiFiWebManager/README.md)
+
+This modular approach makes it easy to reuse the WiFi and web server management code across multiple projects without duplicating code.
 
 ## 🔒 Security Note
 
