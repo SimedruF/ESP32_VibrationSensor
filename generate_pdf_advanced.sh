@@ -96,7 +96,13 @@ generate_pdf() {
     
     cd "$html_dir" || return 1
     
-    chromium --headless --disable-gpu --print-to-pdf="$pdf_name" \
+    # Use chromium with extended virtual time budget to allow JavaScript execution
+    # --virtual-time-budget=10000 gives 10 seconds for JS to execute
+    # --run-all-compositor-stages-before-draw ensures full rendering
+    chromium --headless --disable-gpu \
+             --virtual-time-budget=10000 \
+             --run-all-compositor-stages-before-draw \
+             --print-to-pdf="$pdf_name" \
              --print-to-pdf-no-header "$html_name" 2>&1 | grep -q "bytes written"
     
     local result=$?

@@ -41,7 +41,12 @@ echo ""
 # Generate English PDF
 echo -e "${GREEN}Generating English PDF...${NC}"
 if [ -f "KY002_VibrationSensor_EN.html" ]; then
-    chromium --headless --disable-gpu --print-to-pdf=KY002_VibrationSensor_EN.pdf --print-to-pdf-no-header KY002_VibrationSensor_EN.html 2>&1 | grep -i "bytes written"
+    chromium --headless --disable-gpu \
+             --virtual-time-budget=10000 \
+             --run-all-compositor-stages-before-draw \
+             --print-to-pdf=KY002_VibrationSensor_EN.pdf \
+             --print-to-pdf-no-header \
+             KY002_VibrationSensor_EN.html 2>&1 | grep -i "bytes written"
     if [ -f "KY002_VibrationSensor_EN.pdf" ]; then
         SIZE=$(du -h KY002_VibrationSensor_EN.pdf | cut -f1)
         echo -e "${GREEN}✓ English PDF generated successfully ($SIZE)${NC}"
@@ -57,7 +62,12 @@ echo ""
 # Generate Romanian PDF
 echo -e "${GREEN}Generating Romanian PDF...${NC}"
 if [ -f "KY002_VibrationSensor_RO.html" ]; then
-    chromium --headless --disable-gpu --print-to-pdf=KY002_VibrationSensor_RO.pdf --print-to-pdf-no-header KY002_VibrationSensor_RO.html 2>&1 | grep -i "bytes written"
+    chromium --headless --disable-gpu \
+             --virtual-time-budget=10000 \
+             --run-all-compositor-stages-before-draw \
+             --print-to-pdf=KY002_VibrationSensor_RO.pdf \
+             --print-to-pdf-no-header \
+             KY002_VibrationSensor_RO.html 2>&1 | grep -i "bytes written"
     if [ -f "KY002_VibrationSensor_RO.pdf" ]; then
         SIZE=$(du -h KY002_VibrationSensor_RO.pdf | cut -f1)
         echo -e "${GREEN}✓ Romanian PDF generated successfully ($SIZE)${NC}"

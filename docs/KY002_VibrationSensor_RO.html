@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senzor de Vibrații KY-002 - Ghid Integrare ESP32</title>
+    <!-- Prism.js Core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <!-- Prism.js Line Numbers Plugin CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -124,15 +128,87 @@
         }
         
         .code-block {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 20px;
-            border-radius: 6px;
+            background: #1d1f21;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .code-block pre {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .code-block pre[class*="language-"] {
+            background: #1d1f21;
+            margin: 0;
+            padding: 20px 0;
+        }
+        
+        .code-block code[class*="language-"] {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            padding: 0 20px;
+            display: block;
+        }
+        
+        /* Static line numbers layout */
+        .code-with-lines {
+            display: flex;
+            background: #1d1f21;
+            margin: 0;
+        }
+        
+        .line-numbers-static {
+            background: #0d0d0d;
+            border-right: 2px solid #2d2d2d;
+            padding: 20px 0.8em 20px 0;
+            text-align: right;
+            user-select: none;
+            min-width: 3em;
+            flex-shrink: 0;
+        }
+        
+        .line-numbers-static span {
+            display: block;
+            color: #858585;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .code-with-lines pre {
+            margin: 0 !important;
+            flex-grow: 1;
             overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
+        }
+        
+        .code-with-lines pre code {
+            padding: 20px !important;
+        }
+        
+        /* Alternative: CSS counter-based line numbers */
+        code.line-numbers-enabled {
+            counter-reset: line;
+        }
+        
+        code.line-numbers-enabled .line {
+            counter-increment: line;
+        }
+        
+        code.line-numbers-enabled .line:before {
+            content: counter(line);
+            display: inline-block;
+            width: 2.5em;
+            padding-right: 0.5em;
+            margin-right: 0.5em;
+            color: #858585;
+            text-align: right;
+            background: #0d0d0d;
+            border-right: 2px solid #2d2d2d;
+            user-select: none;
         }
         
         .note-box {
@@ -347,7 +423,12 @@
     
     <p>Acest exemplu demonstrează cum să citiți senzorul de vibrații și să afișați evenimentele pe Serial Monitor:</p>
     
-    <div class="code-block">// Senzor de Vibrații KY-002 - Exemplu de Bază
+    <div class="code-block">
+        <div class="code-with-lines">
+            <div class="line-numbers-static">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span>
+            </div>
+            <pre><code class="language-cpp">// Senzor de Vibrații KY-002 - Exemplu de Bază
 #include &lt;Arduino.h&gt;
 
 #define VIBRATION_PIN 14  // GPIO 14
@@ -373,13 +454,20 @@ void loop() {
     }
     
     delay(10);
-}</div>
+}</code></pre>
+        </div>
+    </div>
 
     <h3>6.2 Contor de Evenimente cu Anti-Rebond</h3>
     
     <p>Acest exemplu avansat numără evenimentele de vibrație și implementează anti-rebond pentru a evita declanșările false:</p>
     
-    <div class="code-block">// KY-002 cu Numărare Evenimente și Anti-rebond
+    <div class="code-block">
+        <div class="code-with-lines">
+            <div class="line-numbers-static">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span><span>32</span><span>33</span><span>34</span><span>35</span>
+            </div>
+            <pre><code class="language-cpp">// KY-002 cu Numărare Evenimente și Anti-rebond
 #include &lt;Arduino.h&gt;
 
 #define VIBRATION_PIN 14
@@ -413,7 +501,9 @@ void loop() {
     
     stareAnterioară = stareCurentă;
     delay(10);
-}</div>
+}</code></pre>
+        </div>
+    </div>
 
     <h2>7. Aplicații Tipice</h2>
     
@@ -473,5 +563,20 @@ void loop() {
         <p>Documentație Tehnică ESP32 + Senzor de Vibrații KY-002</p>
         <p>Pentru mai multe informații și actualizări, vizitați repository-ul proiectului</p>
     </div>
+    
+    <!-- Prism.js Core Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- Prism.js C/C++ Language Support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <!-- Prism.js Line Numbers Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    
+    <!-- Prism syntax highlighting only (no line manipulation) -->
+    <script>
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    </script>
 </body>
 </html>
