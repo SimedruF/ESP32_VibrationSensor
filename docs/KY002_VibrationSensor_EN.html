@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KY-002 Vibration Sensor - ESP32 Integration Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 5px solid #3498db;
+            font-size: 1.6em;
+        }
+        
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+        
+        .header-info {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .header-info p {
+            margin: 5px 0;
+        }
+        
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .spec-table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .spec-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .spec-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .pin-diagram {
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .pin-row {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .pin-number {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .pin-name {
+            margin-left: 15px;
+            font-weight: 600;
+            min-width: 80px;
+        }
+        
+        .pin-desc {
+            margin-left: 15px;
+            color: #666;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .note-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .note-box strong {
+            color: #856404;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .circuit-img {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background: white;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>KY-002 Vibration Sensor - ESP32 Integration Guide</h1>
+    
+    <div class="header-info">
+        <p><strong>Document:</strong> Technical Documentation</p>
+        <p><strong>Sensor Model:</strong> KY-002 Vibration Switch Sensor Module</p>
+        <p><strong>Platform:</strong> ESP32 Microcontroller</p>
+        <p><strong>Version:</strong> 1.0</p>
+        <p><strong>Date:</strong> March 2026</p>
+    </div>
+
+    <h2>1. Introduction</h2>
+    
+    <p>The KY-002 is a digital vibration sensor module based on a mechanical vibration switch. It detects shock and vibration events and outputs a digital signal. This sensor is widely used in anti-theft systems, motion detection applications, and environmental monitoring projects.</p>
+    
+    <p>The module features a simple interface with three pins, making it easy to integrate with microcontrollers like the ESP32. When vibration is detected, the sensor produces a momentary LOW signal that can be captured by the microcontroller's digital input pin.</p>
+
+    <h2>2. Operating Principle</h2>
+    
+    <p>The KY-002 sensor operates using a mechanical vibration switch that contains a spring contact mechanism. Under normal conditions (no vibration), the internal contacts remain in a stable position, and the output signal is HIGH. When vibration or shock occurs, the spring contacts momentarily close, causing the output to go LOW.</p>
+    
+    <div class="info-box">
+        <strong>Key Characteristics:</strong>
+        <ul>
+            <li>Digital output (HIGH/LOW logic)</li>
+            <li>Momentary contact closure on vibration</li>
+            <li>High sensitivity to mechanical shock</li>
+            <li>No calibration required</li>
+        </ul>
+    </div>
+    
+    <p>The sensor responds to various types of vibration including impacts, knocks, and continuous oscillations. The response time is very fast, typically less than 1ms, making it suitable for real-time monitoring applications.</p>
+
+    <h2>3. Technical Specifications</h2>
+    
+    <table class="spec-table">
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Operating Voltage</td>
+                <td>3.3V - 5V DC</td>
+            </tr>
+            <tr>
+                <td>Output Type</td>
+                <td>Digital (TTL compatible)</td>
+            </tr>
+            <tr>
+                <td>Output Signal</td>
+                <td>HIGH (no vibration), LOW (vibration detected)</td>
+            </tr>
+            <tr>
+                <td>Response Time</td>
+                <td>&lt; 1ms</td>
+            </tr>
+            <tr>
+                <td>Operating Temperature</td>
+                <td>-10°C to +50°C</td>
+            </tr>
+            <tr>
+                <td>Module Dimensions</td>
+                <td>18.5mm × 15mm</td>
+            </tr>
+            <tr>
+                <td>Mounting Holes</td>
+                <td>M3 compatible</td>
+            </tr>
+            <tr>
+                <td>Interface</td>
+                <td>3-pin header (VCC, GND, Signal)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Pin Configuration</h2>
+    
+    <div class="pin-diagram">
+        <h3>KY-002 Module Pinout</h3>
+        <div class="pin-row">
+            <div class="pin-number">1</div>
+            <div class="pin-name">GND</div>
+            <div class="pin-desc">Ground (0V) - Connect to ESP32 GND</div>
+        </div>
+        <div class="pin-row">
+            <div class="pin-number">2</div>
+            <div class="pin-name">VCC</div>
+            <div class="pin-desc">Power Supply - Connect to ESP32 3.3V</div>
+        </div>
+        <div class="pin-row">
+            <div class="pin-number">3</div>
+            <div class="pin-name">Signal</div>
+            <div class="pin-desc">Digital Output - Connect to ESP32 GPIO pin</div>
+        </div>
+    </div>
+
+    <h2>5. ESP32 Connection</h2>
+    
+    <h3>5.1 Wiring Diagram</h3>
+    
+    <p>The KY-002 sensor connects directly to the ESP32 without additional components. The recommended connection is as follows:</p>
+    
+    <table class="spec-table">
+        <thead>
+            <tr>
+                <th>KY-002 Pin</th>
+                <th>ESP32 Pin</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GND</td>
+                <td>GND</td>
+                <td>Common ground connection</td>
+            </tr>
+            <tr>
+                <td>VCC</td>
+                <td>3.3V</td>
+                <td>Power supply (3.3V recommended)</td>
+            </tr>
+            <tr>
+                <td>Signal</td>
+                <td>GPIO 14</td>
+                <td>Digital input with internal pull-up</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <img src="../img/ESP32_KY02_VibrationSensor.png" alt="ESP32 and KY-002 Connection Diagram" class="circuit-img">
+    
+    <div class="note-box">
+        <strong>Note:</strong> While the KY-002 can operate at 5V, using 3.3V is recommended for ESP32 to ensure GPIO pin safety. The ESP32 GPIO pins are not 5V tolerant.
+    </div>
+
+    <h3>5.2 Hardware Setup</h3>
+    
+    <ol>
+        <li>Connect the KY-002 GND pin to ESP32 GND</li>
+        <li>Connect the KY-002 VCC pin to ESP32 3.3V output</li>
+        <li>Connect the KY-002 Signal pin to ESP32 GPIO 14 (or any available GPIO)</li>
+        <li>Ensure all connections are secure</li>
+        <li>Mount the sensor in the desired monitoring location</li>
+    </ol>
+
+    <h2>6. Programming the ESP32</h2>
+    
+    <h3>6.1 Basic Reading Example</h3>
+    
+    <p>This example demonstrates how to read the vibration sensor and display events on the Serial Monitor:</p>
+    
+    <div class="code-block">// KY-002 Vibration Sensor - Basic Example
+#include &lt;Arduino.h&gt;
+
+#define VIBRATION_PIN 14  // GPIO 14
+#define LED_PIN 2         // Built-in LED
+
+void setup() {
+    Serial.begin(115200);
+    pinMode(VIBRATION_PIN, INPUT_PULLUP);
+    pinMode(LED_PIN, OUTPUT);
+    
+    Serial.println("KY-002 Vibration Sensor Ready");
+}
+
+void loop() {
+    int sensorValue = digitalRead(VIBRATION_PIN);
+    
+    if (sensorValue == LOW) {
+        digitalWrite(LED_PIN, HIGH);
+        Serial.println("⚠️ Vibration Detected!");
+        delay(100);
+    } else {
+        digitalWrite(LED_PIN, LOW);
+    }
+    
+    delay(10);
+}</div>
+
+    <h3>6.2 Event Counter with Debouncing</h3>
+    
+    <p>This advanced example counts vibration events and implements debouncing to avoid false triggers:</p>
+    
+    <div class="code-block">// KY-002 with Event Counting and Debouncing
+#include &lt;Arduino.h&gt;
+
+#define VIBRATION_PIN 14
+#define DEBOUNCE_TIME 50  // milliseconds
+
+unsigned long vibrationCount = 0;
+unsigned long lastTriggerTime = 0;
+bool lastState = HIGH;
+
+void setup() {
+    Serial.begin(115200);
+    pinMode(VIBRATION_PIN, INPUT_PULLUP);
+    
+    Serial.println("KY-002 Event Counter Ready");
+}
+
+void loop() {
+    int currentState = digitalRead(VIBRATION_PIN);
+    unsigned long currentTime = millis();
+    
+    if (currentState == LOW && lastState == HIGH) {
+        if (currentTime - lastTriggerTime > DEBOUNCE_TIME) {
+            vibrationCount++;
+            lastTriggerTime = currentTime;
+            
+            Serial.print("Event #");
+            Serial.print(vibrationCount);
+            Serial.println(" - Vibration detected!");
+        }
+    }
+    
+    lastState = currentState;
+    delay(10);
+}</div>
+
+    <h2>7. Typical Applications</h2>
+    
+    <h3>7.1 Anti-Theft Security System</h3>
+    <p>The KY-002 can be mounted on doors, windows, or valuable objects to detect unauthorized access or tampering. When vibration is detected, the system can trigger an alarm or send a notification.</p>
+    
+    <h3>7.2 Earthquake Detection</h3>
+    <p>Multiple KY-002 sensors can be deployed to create a basic seismic monitoring network. While not as precise as professional seismometers, they can provide early warning signals for strong vibrations.</p>
+    
+    <h3>7.3 Machine Vibration Monitoring</h3>
+    <p>Industrial equipment monitoring to detect abnormal vibrations that may indicate mechanical failure or maintenance requirements. The sensor can be attached to motors, pumps, or rotating machinery.</p>
+    
+    <h3>7.4 Knock Detection System</h3>
+    <p>Interactive installations where knocking or tapping triggers specific actions, such as turning on lights, playing sounds, or activating displays.</p>
+    
+    <h3>7.5 Vehicle Security</h3>
+    <p>Detecting impacts or movements of parked vehicles to trigger anti-theft alarms or send alerts to the vehicle owner.</p>
+    
+    <h3>7.6 Package Monitoring</h3>
+    <p>Monitoring shipment packages during transit to detect rough handling or excessive shaking that could damage sensitive contents.</p>
+
+    <h2>8. Best Practices</h2>
+    
+    <div class="success-box">
+        <strong>Recommendations:</strong>
+        <ul>
+            <li><strong>Power Supply:</strong> Use stable 3.3V power supply to avoid false triggers</li>
+            <li><strong>Pull-up Resistor:</strong> Enable internal pull-up on GPIO pin for reliable readings</li>
+            <li><strong>Debouncing:</strong> Implement software debouncing to filter noise</li>
+            <li><strong>Mounting:</strong> Secure the sensor firmly to the monitoring surface</li>
+            <li><strong>Sampling Rate:</strong> Use 10ms delay (100 samples/second) for responsive detection</li>
+            <li><strong>Environmental Protection:</strong> Shield sensor from moisture and extreme temperatures</li>
+        </ul>
+    </div>
+
+    <h2>9. Troubleshooting</h2>
+    
+    <h3>False Triggers</h3>
+    <p><strong>Problem:</strong> Sensor triggers without actual vibration.</p>
+    <p><strong>Solution:</strong> Check power supply stability, add debouncing delay, ensure proper grounding, and verify connections are secure.</p>
+    
+    <h3>No Detection</h3>
+    <p><strong>Problem:</strong> Sensor does not respond to vibration.</p>
+    <p><strong>Solution:</strong> Verify wiring connections, check that INPUT_PULLUP is enabled, test sensor with known vibration source, and confirm GPIO pin is not damaged.</p>
+    
+    <h3>Intermittent Response</h3>
+    <p><strong>Problem:</strong> Sensor works inconsistently.</p>
+    <p><strong>Solution:</strong> Check for loose connections, verify power supply voltage, clean sensor contacts, and ensure proper mounting.</p>
+
+    <h2>10. Conclusion</h2>
+    
+    <p>The KY-002 vibration sensor provides a simple and effective solution for detecting mechanical vibrations and shocks. Its digital output interface makes it easy to integrate with the ESP32 platform, enabling a wide range of monitoring and security applications.</p>
+    
+    <p>By following the connection guidelines and programming examples in this document, developers can quickly implement vibration detection systems with minimal hardware requirements and straightforward software implementation.</p>
+
+    <div class="footer">
+        <p>ESP32 + KY-002 Vibration Sensor Technical Documentation</p>
+        <p>For more information and updates, visit the project repository</p>
+    </div>
+</body>
+</html>

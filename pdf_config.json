@@ -1,0 +1,41 @@
+{
+  "output_dir": "docs",
+  "pdf_options": {
+    "no_header": true,
+    "no_footer": false,
+    "margin_top": "10mm",
+    "margin_bottom": "10mm",
+    "margin_left": "10mm",
+    "margin_right": "10mm"
+  },
+  "documents": [
+    {
+      "name": "KY002_EN",
+      "description": "KY-002 English Documentation",
+      "html_files": [
+        "docs/KY002_VibrationSensor_EN.html"
+      ],
+      "output_pdf": "docs/KY002_VibrationSensor_EN.pdf",
+      "enabled": true
+    },
+    {
+      "name": "KY002_RO",
+      "description": "KY-002 Romanian Documentation",
+      "html_files": [
+        "docs/KY002_VibrationSensor_RO.html"
+      ],
+      "output_pdf": "docs/KY002_VibrationSensor_RO.pdf",
+      "enabled": true
+    },
+    {
+      "name": "KY002_Combined",
+      "description": "Combined English and Romanian Documentation",
+      "html_files": [
+        "docs/KY002_VibrationSensor_EN.html",
+        "docs/KY002_VibrationSensor_RO.html"
+      ],
+      "output_pdf": "docs/KY002_VibrationSensor_Combined.pdf",
+      "enabled": true
+    }
+  ]
+}
